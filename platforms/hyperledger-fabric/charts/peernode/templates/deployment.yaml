@@ -12,7 +12,7 @@ metadata:
     {{- include "labels.custom" . | nindent 2 }}
 spec:
   updateStrategy:
-    type: RollingUpdate 
+    type: RollingUpdate
   serviceName: "{{ $.Values.peer.name }}"
   replicas: 1
   selector:
@@ -28,7 +28,7 @@ spec:
         app: {{ $.Values.peer.name }}
         app.kubernetes.io/name: {{ $.Values.peer.name }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-    spec:   
+    spec:
       serviceAccountName: {{ $.Values.vault.serviceaccountname }}
       imagePullSecrets:
         - name: {{ $.Values.vault.imagesecretname }}
@@ -85,7 +85,7 @@ spec:
           VAULT_CLIENT_TOKEN=$(curl -sS --request POST ${VAULT_ADDR}/v1/auth/${KUBERNETES_AUTH_PATH}/login \
             -H "Content-Type: application/json" \
             -d '{"role":"'"${VAULT_APP_ROLE}"'","jwt":"'"${KUBE_SA_TOKEN}"'"}' | \
-            jq -r 'if .errors then . else .auth.client_token end')        
+            jq -r 'if .errors then . else .auth.client_token end')
           validateVaultResponse 'vault login token' "${VAULT_CLIENT_TOKEN}"
 
           vault_secret_key="${VAULT_SECRET_PREFIX}/tls"
@@ -142,8 +142,8 @@ spec:
               ${VAULT_ADDR}/v1/${vault_secret_key} | jq -r 'if .errors then . else . end')
             validateVaultResponse "secret (${vault_secret_key})" "${LOOKUP_SECRET_RESPONSE}"
             PASSWORD=$(echo ${LOOKUP_SECRET_RESPONSE} | jq -r ".data[\"${vault_data_key}\"]")
-            echo "${PASSWORD}" >> ${MOUNT_PATH}/user_cred 
-          fi            
+            echo "${PASSWORD}" >> ${MOUNT_PATH}/user_cred
+          fi
         volumeMounts:
         {{ if .Values.vault.tls  }}
         - name: vaultca
@@ -188,7 +188,7 @@ spec:
         - name: COUCHDB_USER
           value: "{{ $.Values.peer.couchdb.username }}"
         volumeMounts:
-        - name: datadir-couchdb
+        - name: datadir-couchdb-{{ $.Values.storage.peer.storageclassname }}
           mountPath: /opt/couchdb/data
         - name: certificates
           mountPath: /etc/hyperledger/fabric/crypto
@@ -209,7 +209,7 @@ spec:
         - configMapRef:
             name: {{ $.Values.peer.name }}-config
         volumeMounts:
-        - name: datadir
+        - name: datadir-{{ $.Values.storage.peer.storageclassname }}
           mountPath: /var/hyperledger/production
         - name: dockersocket
           mountPath: /host/var/run/docker.sock
@@ -218,9 +218,9 @@ spec:
         - name: {{ $.Values.peer.name }}-msp-config-volume
           mountPath: /etc/hyperledger/fabric/NodeOUconfig
           readOnly: true
-  volumeClaimTemplates: 
+  volumeClaimTemplates:
   - metadata:
-      name: datadir
+      name: datadir-{{ $.Values.storage.peer.storageclassname }}
     spec:
       storageClassName: {{ $.Values.storage.peer.storageclassname }}
       accessModes: [ "ReadWriteOnce" ]
@@ -228,9 +228,9 @@ spec:
         requests:
           storage: {{ $.Values.storage.peer.storagesize }}
   - metadata:
-      name: datadir-couchdb     
+      name: datadir-couchdb-{{ $.Values.storage.peer.storageclassname }}
     spec:
-      storageClassName: {{ $.Values.storage.couchdb.storageclassname }}    
+      storageClassName: {{ $.Values.storage.couchdb.storageclassname }}
       accessModes: [ "ReadWriteOnce" ]
       resources:
         requests:
