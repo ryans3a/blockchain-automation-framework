@@ -135,11 +135,11 @@ spec:
         - name: KAFKA_LOG_DIRS
           value: /var/lib/kafka/data/logs
         volumeMounts:
-        - name: datadir-{{ $.Values.metadata.namespace }}
+        - name: datadir
           mountPath: /var/lib/kafka
   volumeClaimTemplates:
   - metadata:
-      name: datadir-{{ $.Values.metadata.namespace }}
+      name: datadir
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
