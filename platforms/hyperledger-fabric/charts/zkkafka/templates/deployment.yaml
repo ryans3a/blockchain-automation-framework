@@ -11,7 +11,7 @@ metadata:
     app.kubernetes.io/name: {{ $.Values.zookeeper.name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }} 
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "labels.custom" . | nindent 2 }}
 spec:
   serviceName: "{{ $.Values.zookeeper.peerservicename }}"
@@ -45,7 +45,7 @@ spec:
           name: peer
         - containerPort: 3888
           name: leader-election
-       
+
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -56,7 +56,7 @@ metadata:
     app.kubernetes.io/name: {{ $.Values.kafka.name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }} 
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "labels.custom" . | nindent 2 }}
 spec:
   serviceName: "{{ $.Values.kafka.brokerservicename }}"
@@ -71,7 +71,7 @@ spec:
       labels:
         app: {{ $.Values.kafka.name }}
         app.kubernetes.io/name: {{ $.Values.kafka.name }}
-        app.kubernetes.io/instance: {{ .Release.Name }} 
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       terminationGracePeriodSeconds: 10
       initContainers:
@@ -90,7 +90,7 @@ spec:
           ZK_STATUS=imnotok
           COUNTER=1
           while [ "$ZK_STATUS" != "imok" ]
-          do 
+          do
              if [ "$COUNTER" -le {{ $.Values.zookeeper.readinessthreshold }} ]
              then
                 ZK_STATUS=$(echo ruok | nc ${ZOOKEEPER_CLIENT_SERVICE}.${NAMESPACE} 2181)
@@ -104,8 +104,8 @@ spec:
              else
                 echo "Retry attempted $COUNTER times, no zookeeper service is up and running. Giving up!"
                 exit 1
-                break   
-             fi                    
+                break
+             fi
           done
 
       containers:
@@ -135,11 +135,11 @@ spec:
         - name: KAFKA_LOG_DIRS
           value: /var/lib/kafka/data/logs
         volumeMounts:
-        - name: datadir
+        - name: datadir-{{ $.Values.metadata.namespace }}
           mountPath: /var/lib/kafka
   volumeClaimTemplates:
   - metadata:
-      name: datadir
+      name: datadir-{{ $.Values.metadata.namespace }}
     spec:
       accessModes: [ "ReadWriteOnce" ]
       resources:
