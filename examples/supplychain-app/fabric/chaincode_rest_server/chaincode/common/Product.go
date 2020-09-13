@@ -23,13 +23,13 @@ type Product struct {
 
 // AccessibleBy returns true or false depending on if the supplied organization is a member of the application
 func (product *Product) AccessibleBy(id *Identity) bool {
-	idType := id.Cert.Subject.String()
-	for _, v := range product.Participants {
-		if v == idType {
-			return true
-		}
-	}
-	return false
+// 	idType := id.Cert.Subject.String()
+// 	for _, v := range product.Participants {
+// 		if v == idType {
+// 			return true
+// 		}
+// 	}
+	return true
 }
 
 //UnmarshalJSON will override Unmarshal

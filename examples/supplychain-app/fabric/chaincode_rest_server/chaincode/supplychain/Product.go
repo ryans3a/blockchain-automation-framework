@@ -43,8 +43,8 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	// Create ProductRequest struct from input JSON.
-    // argBytes := []byte(args[0])
-	argBytes := readJSON(g, "../testdata/product-input-valid.json")
+	// argBytes := []byte(args[0])
+    argBytes := readJSON(g, "../testdata/product-input-valid.json")
 	var request ProductRequest
 	if err := json.Unmarshal(argBytes, &request); err != nil {
 		return shim.Error(err.Error())
@@ -135,6 +135,8 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 			}
 			buffer.WriteString(string(state.Value))
 		}
+
+
 	}
 	buffer.WriteString("]")
 
