@@ -3,12 +3,25 @@ package supplychain
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
+	"os"
 	"fmt"
 	. "github.com/chaincode/common"
 
+	"github.com/franela/goblin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
 )
+
+func readJSON(g *goblin.G, path string) []byte {
+	jsonFile, err := os.Open(path)
+	if err != nil {
+		g.Fail(err)
+	}
+	defer jsonFile.Close()
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	return byteValue
+}
 
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
