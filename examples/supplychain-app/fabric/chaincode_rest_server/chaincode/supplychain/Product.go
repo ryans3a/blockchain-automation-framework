@@ -80,15 +80,14 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	product.Participants = append(product.Participants, identity.Cert.Subject.String())
-
-	s.logger.Infof("product: %s\n", string(product))
+	s.logger.Infof("%+v\n", product.String())
 	// Put new Product onto blockchain
 	productAsBytes, _ := json.Marshal(product)
 	if err := stub.PutState(product.ID, productAsBytes); err != nil {
 		return shim.Error(err.Error())
 	}
 
-	s.logger.Infof("PutState: %s\n", product.ID)
+	s.logger.Infof("put: %s\n", product.ID)
 	response := map[string]interface{}{
 		"generatedID": product.ID,
 	}
