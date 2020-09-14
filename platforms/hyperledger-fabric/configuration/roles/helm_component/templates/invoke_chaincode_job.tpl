@@ -27,7 +27,7 @@ spec:
       role: vault-role
       address: {{ vault.url }}
       authpath: {{ namespace | e }}-auth
-      adminsecretprefix: secret/crypto/peerOrganizations/{{ namespace }}/users/admin 
+      adminsecretprefix: secret/crypto/peerOrganizations/{{ namespace }}/users/admin
       orderersecretprefix: secret/crypto/peerOrganizations/{{ namespace }}/orderer
       serviceaccountname: vault-auth
       imagesecretname: regcred
@@ -38,7 +38,7 @@ spec:
       builder: hyperledger/fabric-ccenv:{{ network.version }}
       name: {{ component_chaincode.name | lower | e }}
       version: {{ component_chaincode.version }}
-      instantiationarguments: {{ component_chaincode.arguments | quote}}
+      invokearguments: {{ component_chaincode.arguments2 | quote}}
       endorsementpolicies:  {{ component_chaincode.endorsements | quote}}
     channel:
       name: {{ item.channel_name | lower }}
