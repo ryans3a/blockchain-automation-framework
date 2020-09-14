@@ -160,7 +160,7 @@ spec:
         - name: CHANNEL_NAME
           value: "{{ $.Values.channel.name }}"
         - name: INSTANTIATION_ARGUMENTS
-          value: '{{ $.Values.chaincode.instantiationarguments }}'
+          value: '{{ $.Values.chaincode.invokearguments }}'
         volumeMounts:
         - name: certificates
           mountPath: /opt/gopath/src/github.com/hyperledger/fabric/crypto
