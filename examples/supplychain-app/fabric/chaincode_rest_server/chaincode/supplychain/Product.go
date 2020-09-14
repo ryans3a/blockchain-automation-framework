@@ -3,25 +3,12 @@ package supplychain
 import (
 	"bytes"
 	"encoding/json"
-	"io/ioutil"
-	"os"
 	"fmt"
 	. "github.com/chaincode/common"
 
-	"github.com/franela/goblin"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
 )
-
-func readJSON(g *goblin.G, path string) []byte {
-	jsonFile, err := os.Open(path)
-	if err != nil {
-		g.Fail(err)
-	}
-	defer jsonFile.Close()
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	return byteValue
-}
 
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
@@ -42,17 +29,17 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	// Create ProductRequest struct from input JSON.
-	// argBytes := []byte(args[0])
-    argBytes := readJSON(g, "../testdata/product-input-valid.json")
-	var request ProductRequest
-	if err := json.Unmarshal(argBytes, &request); err != nil {
-		return shim.Error(err.Error())
-	}
-	request.ID = args[0]
-	s.logger.Infof("request ID: %s\n", request.ID)
-	//Check if product state using id as key exsists
-	testProductAsBytes, err := stub.GetState(request.ID)
+	ID := args[0]
+	s.logger.Infof("ID: %s\n", ID)
+
+// 	// Create ProductRequest struct from input JSON.
+// 	argBytes := []byte(args[0])
+// 	var request ProductRequest
+// 	if err := json.Unmarshal(argBytes, &request); err != nil {
+// 		return shim.Error(err.Error())
+// 	}
+	//Check if product  state using id as key exsists
+	testProductAsBytes, err := stub.GetState(ID)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -65,29 +52,28 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	product := Product{
-		ID:           request.ID,
+		ID:           ID,
 		Type:         "product",
-		Name:         request.ProductName,
+		Name:         "request.ProductName",
 		Health:       "",
-		Metadata:     request.Metadata,
-		Location:     request.Location,
+		Metadata:     "request.Metadata",
+		Location:     "request.Location",
 		Sold:         false,
 		Recalled:     false,
 		ContainerID:  "",
 		Custodian:    identity.Cert.Subject.String(),
 		Timestamp:    int64(s.clock.Now().UTC().Unix()),
-		Participants: request.Participants,
+		Participants: ["OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US","OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US","OU=Store,O=PartyD,L=40.73/-74/New York,C=US"],
 	}
 
 	product.Participants = append(product.Participants, identity.Cert.Subject.String())
-	s.logger.Infof("%+v\n", product.String())
+
 	// Put new Product onto blockchain
 	productAsBytes, _ := json.Marshal(product)
 	if err := stub.PutState(product.ID, productAsBytes); err != nil {
 		return shim.Error(err.Error())
 	}
 
-	s.logger.Infof("put: %s\n", product.ID)
 	response := map[string]interface{}{
 		"generatedID": product.ID,
 	}
@@ -137,8 +123,6 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 			}
 			buffer.WriteString(string(state.Value))
 		}
-
-
 	}
 	buffer.WriteString("]")
 
@@ -270,7 +254,7 @@ func (s *SmartContract) updateProductCustodian(stub shim.ChaincodeStubInterface,
 	if !(product.AccessibleBy(identity)) {
 		return peer.Response{
 			Status:  403,
-			Message: fmt.Sprintf("You are not authorized to perform this transaction, product not accesible by identity"),
+			Message: fmt.Sprintf("You are not authorized to perform this transaction, product not accesible by indentity"),
 		}
 	}
 	//Ensure new custodian isnt the same as old one
