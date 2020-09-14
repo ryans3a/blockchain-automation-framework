@@ -29,17 +29,14 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
 
-	ID := args[0]
-	s.logger.Infof("ID: %s\n", ID)
-
-// 	// Create ProductRequest struct from input JSON.
-// 	argBytes := []byte(args[0])
-// 	var request ProductRequest
-// 	if err := json.Unmarshal(argBytes, &request); err != nil {
-// 		return shim.Error(err.Error())
-// 	}
+	// Create ProductRequest struct from input JSON.
+	argBytes := []byte(args[0])
+	var request ProductRequest
+	if err := json.Unmarshal(argBytes, &request); err != nil {
+		return shim.Error(err.Error())
+	}
 	//Check if product  state using id as key exsists
-	testProductAsBytes, err := stub.GetState(ID)
+	testProductAsBytes, err := stub.GetState(request.ID)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -52,18 +49,18 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	product := Product{
-		ID:           ID,
+		ID:           request.ID,
 		Type:         "product",
-		Name:         "request.ProductName",
+		Name:         request.ProductName,
 		Health:       "",
-		Metadata:     "request.Metadata",
-		Location:     "request.Location",
+		Metadata:     request.Metadata,
+		Location:     request.Location,
 		Sold:         false,
 		Recalled:     false,
 		ContainerID:  "",
 		Custodian:    identity.Cert.Subject.String(),
 		Timestamp:    int64(s.clock.Now().UTC().Unix()),
-		Participants: ["OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US","OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US","OU=Store,O=PartyD,L=40.73/-74/New York,C=US"],
+		Participants: request.Participants,
 	}
 
 	product.Participants = append(product.Participants, identity.Cert.Subject.String())
@@ -254,7 +251,7 @@ func (s *SmartContract) updateProductCustodian(stub shim.ChaincodeStubInterface,
 	if !(product.AccessibleBy(identity)) {
 		return peer.Response{
 			Status:  403,
-			Message: fmt.Sprintf("You are not authorized to perform this transaction, product not accesible by indentity"),
+			Message: fmt.Sprintf("You are not authorized to perform this transaction, product not accesible by identity"),
 		}
 	}
 	//Ensure new custodian isnt the same as old one
