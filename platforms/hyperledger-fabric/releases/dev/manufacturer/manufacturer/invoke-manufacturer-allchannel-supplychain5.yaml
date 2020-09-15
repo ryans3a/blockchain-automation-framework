@@ -1,12 +1,12 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: invoke-manufacturer-allchannel-supplychain4
+  name: invoke-manufacturer-allchannel-supplychain5
   namespace: manufacturer-net
   annotations:
     flux.weave.works/automated: "false"
 spec:
-  releaseName: invoke-manufacturer-allchannel-supplychain4
+  releaseName: invoke-manufacturer-allchannel-supplychain5
   chart:
     git: ssh://git@github.com/ryans3a/blockchain-automation-framework.git
     ref: local
