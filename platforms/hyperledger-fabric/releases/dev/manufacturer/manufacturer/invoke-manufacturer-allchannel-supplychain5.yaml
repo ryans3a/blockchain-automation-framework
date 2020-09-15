@@ -38,7 +38,7 @@ spec:
       builder: hyperledger/fabric-ccenv:1.4.4
       name: supplychain
       version: 1
-      invokearguments: '\"createProduct\",\"A\",\"B\"'
+      invokearguments: '\"createProduct\",\"AA\",\"BB\"'
       endorsementpolicies:  ''
     channel:
       name: allchannel
