@@ -13,6 +13,7 @@ import (
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
     s.logger.Infof("createProduct")
+	fmt.Printf("Ahhhh createProduct: %s", args)
 	identity, err := GetInvokerIdentity(stub)
 	if err != nil {
 		shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
@@ -26,6 +27,7 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 		}
 	}
 
+	fmt.Printf("Ahhhh 001")
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
 	}
@@ -38,6 +40,7 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	//}
 
 	ID := args[0]
+	fmt.Printf("Ahhhh ID: %s", ID)
 	//Check if product  state using id as key exsists
 	testProductAsBytes, err := stub.GetState(ID)
 	if err != nil {
