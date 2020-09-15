@@ -30,13 +30,15 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	// Create ProductRequest struct from input JSON.
-	argBytes := []byte(args[0])
-	var request ProductRequest
-	if err := json.Unmarshal(argBytes, &request); err != nil {
-		return shim.Error(err.Error())
-	}
+	//argBytes := []byte(args[0])
+	//var request ProductRequest
+	//if err := json.Unmarshal(argBytes, &request); err != nil {
+	//	return shim.Error(err.Error())
+	//}
+
+	ID := args[0]
 	//Check if product  state using id as key exsists
-	testProductAsBytes, err := stub.GetState(request.ID)
+	testProductAsBytes, err := stub.GetState(ID)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -49,18 +51,18 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	product := Product{
-		ID:           request.ID,
+		ID:           ID,
 		Type:         "product",
-		Name:         request.ProductName,
+		Name:         "request.ProductName",
 		Health:       "",
-		Metadata:     request.Metadata,
-		Location:     request.Location,
+		Metadata:     "request.Metadata",
+		Location:     "request.Location",
 		Sold:         false,
 		Recalled:     false,
 		ContainerID:  "",
 		Custodian:    identity.Cert.Subject.String(),
 		Timestamp:    int64(s.clock.Now().UTC().Unix()),
-		Participants: request.Participants,
+		Participants: []string{"OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US", "OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US", "OU=Store,O=PartyD,L=40.73/-74/New York,C=U"},
 	}
 
 	product.Participants = append(product.Participants, identity.Cert.Subject.String())
