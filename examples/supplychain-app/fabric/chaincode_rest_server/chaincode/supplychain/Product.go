@@ -12,6 +12,7 @@ import (
 
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
+    s.logger.Infof("createProduct")
 	identity, err := GetInvokerIdentity(stub)
 	if err != nil {
 		shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
