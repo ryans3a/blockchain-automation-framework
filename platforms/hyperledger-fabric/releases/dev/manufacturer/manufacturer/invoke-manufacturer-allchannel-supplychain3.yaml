@@ -1,12 +1,12 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: invoke-manufacturer-allchannel-supplychain2
+  name: invoke-manufacturer-allchannel-supplychain3
   namespace: manufacturer-net
   annotations:
     flux.weave.works/automated: "false"
 spec:
-  releaseName: invoke-manufacturer-allchannel-supplychain2
+  releaseName: invoke-manufacturer-allchannel-supplychain3
   chart:
     git: ssh://git@github.com/ryans3a/blockchain-automation-framework.git
     ref: local
@@ -38,7 +38,7 @@ spec:
       builder: hyperledger/fabric-ccenv:1.4.4
       name: supplychain
       version: 1
-      invokearguments: '\"createProduct\",\"{\"productName\":\"Dextrose\",\"misc\":{\"name\":\"ExpensiveDextrose\"},\"trackingID\":\"0d15d7b8-caaa-468d-8b83-aae049b40f46\",\"lastScannedAt\":\"\",\"counterparties\":[\"OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US\",\"OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US\",\"OU=Store,O=PartyD,L=40.73/-74/NewYork,C=US\"]}\"'
+      invokearguments: '\"createProduct\",\"{"productName":"Dextrose","misc":{"name":"ExpensiveDextrose"},"trackingID":"0d15d7b8-caaa-468d-8b83-aae049b40f46","lastScannedAt":"","counterparties":["OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US","OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US","OU=Store,O=PartyD,L=40.73/-74/NewYork,C=US"]}\"'
       endorsementpolicies:  ''
     channel:
       name: allchannel
