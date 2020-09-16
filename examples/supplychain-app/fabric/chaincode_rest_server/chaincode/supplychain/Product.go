@@ -120,12 +120,15 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 			return shim.Error(fmt.Sprintf("Error accessing state: %s", err))
 		}
 
+	    s.logger.Infof("state: %s\n", state.String())
 		// Don't return products issuer isn't a party to
 		var product Product
 		err = json.Unmarshal(state.Value, &product)
 		if err != nil && err.Error() != "Not a Product" {
 			return shim.Error(err.Error())
 		}
+
+	    s.logger.Infof("product: %s\n", product.String())
 		if product.AccessibleBy(identity) {
 			if buffer.Len() != 1 {
 				buffer.WriteString(",")
