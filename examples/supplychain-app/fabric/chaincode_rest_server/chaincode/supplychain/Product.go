@@ -18,12 +18,12 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 	s.logger.Infof("%+v\n", identity.Cert.Subject.String())
 
-	if !identity.CanInvoke("createProduct") {
-		return peer.Response{
-			Status:  403,
-			Message: fmt.Sprintf("You are not authorized to perform this transaction, cannot invoke createProduct"),
-		}
-	}
+// 	if !identity.CanInvoke("createProduct") {
+// 		return peer.Response{
+// 			Status:  403,
+// 			Message: fmt.Sprintf("You are not authorized to perform this transaction, cannot invoke createProduct"),
+// 		}
+// 	}
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
