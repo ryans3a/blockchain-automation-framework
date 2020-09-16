@@ -56,7 +56,9 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 		Type:         "product",
 		Name:         "request.ProductName",
 		Health:       "",
-		Metadata:     "request.Metadata",
+		Metadata:     map[string]interface{}{
+                          "name": "Expensive Dextrose",
+                      },
 		Location:     "request.Location",
 		Sold:         false,
 		Recalled:     false,
