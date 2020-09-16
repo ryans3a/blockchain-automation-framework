@@ -19,8 +19,8 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	if identity == nil {
 		shim.Error(fmt.Sprintf("Identity is nil\n"))
 	}
-	s.logger.Infof("identity: %s\n", identity.String())
-// 	s.logger.Infof("%+v\n", identity.Cert.Subject.String())
+//  	s.logger.Infof("%+v\n", identity.Cert.Subject.String())
+ 	s.logger.Infof("%+v\n", string(identity))
 
 // 	if !identity.CanInvoke("createProduct") {
 // 		return peer.Response{
@@ -41,7 +41,6 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	//}
 
 	ID := args[0]
-	s.logger.Infof("ID: %s\n", ID.String())
 	//Check if product  state using id as key exsists
 	testProductAsBytes, err := stub.GetState(ID)
 	if err != nil {
@@ -76,9 +75,9 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 
 	// Put new Product onto blockchain
 
-	s.logger.Infof("product: %s\n", product.String())
+	s.logger.Infof("product: %s\n", string(product))
 	productAsBytes, _ := json.Marshal(product)
-	s.logger.Infof("productAsBytes: %s\n", productAsBytes.String())
+	s.logger.Infof("productAsBytes: %s\n", string(productAsBytes))
 	if err := stub.PutState(product.ID, productAsBytes); err != nil {
 		return shim.Error(err.Error())
 	}
@@ -128,7 +127,7 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 			return shim.Error(err.Error())
 		}
 
-	    s.logger.Infof("product: %s\n", product.String())
+	    s.logger.Infof("product: %s\n", string(product))
 		if product.AccessibleBy(identity) {
 			if buffer.Len() != 1 {
 				buffer.WriteString(",")
