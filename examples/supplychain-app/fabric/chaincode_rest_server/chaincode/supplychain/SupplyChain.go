@@ -28,7 +28,7 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	// Extract the function and args from the transaction proposal
 	function, args := stub.GetFunctionAndParameters()
 
-	fmt.Printf("Function: %s, %s", function, args)
+	fmt.Printf("Function: %s, %s\n", function, args)
 
 	// Call the internal function based on the arguments supplied
 	switch function {
