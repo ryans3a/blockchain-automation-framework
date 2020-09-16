@@ -29,7 +29,6 @@ func (s *SmartContract) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	function, args := stub.GetFunctionAndParameters()
 
 	fmt.Printf("Function: %s, %s", function, args)
-	s.logger.Infof("Function: %s, %s", function, args)
 
 	// Call the internal function based on the arguments supplied
 	switch function {
