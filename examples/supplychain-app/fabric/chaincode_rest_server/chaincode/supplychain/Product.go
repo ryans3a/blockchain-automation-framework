@@ -12,13 +12,13 @@ import (
 
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-    identity, err := GetInvokerIdentity(stub)
-	if err != nil {
-		shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
-	}
-	if identity == nil {
-		shim.Error(fmt.Sprintf("Identity is nil\n"))
-	}
+    //identity, err := GetInvokerIdentity(stub)
+	//if err != nil {
+	//	shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
+	//}
+	//if identity == nil {
+	//	shim.Error(fmt.Sprintf("Identity is nil\n"))
+	//}
  	//s.logger.Infof("%+v\n", identity.Cert.Subject.String())
 
 // 	if !identity.CanInvoke("createProduct") {
@@ -93,10 +93,10 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 //getAllProducts retrieves all products on the ledger
 func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []string) peer.Response {
 	//Get user identity
-	identity, err := GetInvokerIdentity(stub)
-	if err != nil {
-		shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
-	}
+	//identity, err := GetInvokerIdentity(stub)
+	//if err != nil {
+	//	shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
+	//}
 
 	if len(args) != 0 {
 		return shim.Error("Incorrect number of arguments. Expecting 0")
