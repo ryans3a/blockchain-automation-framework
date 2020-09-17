@@ -38,14 +38,6 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:0ad5484a25fbd88409bae8b8b19134135fe73d3cb00e45d3255280b2ab975fcc"
-  name = "github.com/benbjohnson/clock"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "7dc76406b6d3c05b5f71a86293cbcf3c4ea03b19"
-
-[[projects]]
-  branch = "master"
   digest = "1:e48c63e818c67fbf3d7afe20bba33134ab1a5bf384847385384fd027652a5a96"
   name = "github.com/containerd/continuity"
   packages = ["pathdriver"]
@@ -536,7 +528,6 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/benbjohnson/clock",
     "github.com/franela/goblin",
     "github.com/golang/protobuf/proto",
     "github.com/hyperledger/fabric/core/chaincode/shim",

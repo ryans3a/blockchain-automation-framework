@@ -5,9 +5,6 @@ import (
 	"io/ioutil"
 	"os"
 	"testing"
-	"time"
-
-	"github.com/benbjohnson/clock"
 
 	. "github.com/chaincode/common"
 
@@ -59,9 +56,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Create Container", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 		})
 
@@ -135,9 +129,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Get All Containers", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 		})
 
@@ -237,9 +228,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Get Single Container", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 		})
 
@@ -317,9 +305,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Scan Container ", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 
 		})
@@ -418,9 +403,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Update Container Custodian", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 
 		})
@@ -729,9 +711,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Package Item", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 
 		})
@@ -798,9 +777,6 @@ func TestContainer(t *testing.T) {
 	g.Describe("Package Item", func() {
 		g.BeforeEach(func() {
 			// Set time mock
-			mockClock := clock.NewMock()
-			mockClock.Set(time.Unix(int64(1552583510960), int64(0)))
-			chaincode.clock = mockClock
 			mockStub = NewMockStubWithCreator("mockstub", chaincode, "ManufacturerMSP", "../testdata/manufacturer.pem")
 
 		})

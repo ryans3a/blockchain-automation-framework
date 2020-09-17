@@ -1,12 +1,9 @@
 package supplychain
 
-
 import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	. "github.com/chaincode/common"
-
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
 )
@@ -50,7 +47,6 @@ func (s *SmartContract) createContainer(stub shim.ChaincodeStubInterface, args [
 		Location:     request.Location,
 		ContainerID:  "",
 		Custodian:    identity.Cert.Subject.String(),
-		Timestamp:    int64(s.clock.Now().UTC().Unix()),
 		Contents:     []string{},
 		Participants: request.Participants,
 	}
@@ -227,7 +223,7 @@ func (s *SmartContract) updateContainerCustodian(stub shim.ChaincodeStubInterfac
 	//change custodian
 	//container.Custodian = newCustodian
 	//container.Location = newLocation
-	//container.Timestamp = int64(s.clock.Now().UTC().Unix())
+	//container.Timestamp = 1552583510960
 
 
 	//newBytes, _ := json.Marshal(container)
@@ -243,7 +239,6 @@ func (s *SmartContract) updateContainerCustodian(stub shim.ChaincodeStubInterfac
 
         container.Custodian = newCustodian
         container.Location = newLocation
-        container.Timestamp = int64(s.clock.Now().UTC().Unix())
 
             newBytes, _ := json.Marshal(container)
             if err := stub.PutState(container.ID, newBytes); err != nil {
@@ -274,7 +269,7 @@ func (s *SmartContract) updateContainerCustodian(stub shim.ChaincodeStubInterfac
                 //claim product
                 contentState.Custodian = newCustodian
                 contentState.Location = newLocation
-                contentState.Timestamp = container.Timestamp
+                contentState.Timestamp = 1552583510960
                 newProductBytes, _ := json.Marshal(contentState)
                 if err := stub.PutState(contentID, newProductBytes); err != nil {
                     return shim.Error(err.Error())

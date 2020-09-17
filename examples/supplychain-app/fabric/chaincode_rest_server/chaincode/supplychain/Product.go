@@ -12,21 +12,21 @@ import (
 
 // createProduct creates a new Product on the blockchain using the  with the supplied ID
 func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []string) peer.Response {
-    //identity, err := GetInvokerIdentity(stub)
+	//identity, err := GetInvokerIdentity(stub)
 	//if err != nil {
 	//	shim.Error(fmt.Sprintf("Error getting invoker identity: %s\n", err.Error()))
 	//}
 	//if identity == nil {
 	//	shim.Error(fmt.Sprintf("Identity is nil\n"))
 	//}
- 	//s.logger.Infof("%+v\n", identity.Cert.Subject.String())
+	//s.logger.Infof("%+v\n", identity.Cert.Subject.String())
 
-// 	if !identity.CanInvoke("createProduct") {
-// 		return peer.Response{
-// 			Status:  403,
-// 			Message: fmt.Sprintf("You are not authorized to perform this transaction, cannot invoke createProduct"),
-// 		}
-// 	}
+	// 	if !identity.CanInvoke("createProduct") {
+	// 		return peer.Response{
+	// 			Status:  403,
+	// 			Message: fmt.Sprintf("You are not authorized to perform this transaction, cannot invoke createProduct"),
+	// 		}
+	// 	}
 
 	if len(args) != 1 {
 		return shim.Error("Incorrect number of arguments. Expecting 1")
@@ -54,19 +54,19 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	}
 
 	product := Product{
-		ID:           ID,
-		Type:         "product",
-		Name:         "request.ProductName",
-		Health:       "",
-		Metadata:     map[string]interface{}{
-                          "name": "Expensive Dextrose",
-                      },
+		ID:     ID,
+		Type:   "product",
+		Name:   "request.ProductName",
+		Health: "",
+		Metadata: map[string]interface{}{
+			"name": "Expensive Dextrose",
+		},
 		Location:     "request.Location",
 		Sold:         false,
 		Recalled:     false,
 		ContainerID:  "",
 		Custodian:    "identity.Cert.Subject.String()",
-		Timestamp:    int64(s.clock.Now().UTC().Unix()),
+		Timestamp:    1552583510960,
 		Participants: []string{"OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US", "OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US", "OU=Store,O=PartyD,L=40.73/-74/New York,C=U"},
 	}
 
@@ -113,12 +113,14 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 	var buffer bytes.Buffer
 	buffer.WriteString("[")
 	for iterator.HasNext() {
+
+		s.logger.Infof("line")
 		state, iterErr := iterator.Next()
 		if iterErr != nil {
 			return shim.Error(fmt.Sprintf("Error accessing state: %s", err))
 		}
 
-	    s.logger.Infof("state: %s\n", state.String())
+		s.logger.Infof("state: %s\n", state.String())
 		// Don't return products issuer isn't a party to
 		var product Product
 		err = json.Unmarshal(state.Value, &product)
@@ -126,7 +128,7 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 			return shim.Error(err.Error())
 		}
 
-	    s.logger.Infof("product: %s\n", product)
+		s.logger.Infof("product: %s\n", product)
 		if buffer.Len() != 1 {
 			buffer.WriteString(",")
 		}
@@ -298,7 +300,7 @@ func (s *SmartContract) updateProductCustodian(stub shim.ChaincodeStubInterface,
 	//change custodian
 	product.Custodian = newCustodian
 	product.Location = newLocation
-	product.Timestamp = int64(s.clock.Now().UTC().Unix())
+	product.Timestamp = 1552583510960
 
 	newBytes, _ := json.Marshal(product)
 

@@ -2,24 +2,19 @@ package supplychain
 
 import (
 	"fmt"
-
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	"github.com/hyperledger/fabric/protos/peer"
-
-	"github.com/benbjohnson/clock"
 )
 
 // The SmartContract containing this chaincode
 type SmartContract struct {
 	logger *shim.ChaincodeLogger
-	clock  clock.Clock
 }
 
 // Init is called during chaincode instantiation to initialize any
 // data.
 func (s *SmartContract) Init(stub shim.ChaincodeStubInterface) peer.Response {
 	s.logger = shim.NewLogger("aah_supplychain")
-	s.clock = clock.New()
 	return shim.Success(nil)
 }
 
