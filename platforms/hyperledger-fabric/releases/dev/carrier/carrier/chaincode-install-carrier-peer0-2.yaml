@@ -1,12 +1,12 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: chaincode-install-carrier-peer0-1
+  name: chaincode-install-carrier-peer0-2
   namespace: carrier-net
   annotations:
     flux.weave.works/automated: "false"
 spec:
-  releaseName: chaincode-install-carrier-peer0-1
+  releaseName: chaincode-install-carrier-peer0-2
   chart:
     git: ssh://git@github.com/ryans3a/blockchain-automation-framework.git
     ref: local
