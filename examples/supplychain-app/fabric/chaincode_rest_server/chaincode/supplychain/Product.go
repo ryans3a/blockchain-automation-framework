@@ -19,7 +19,7 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 	if identity == nil {
 		shim.Error(fmt.Sprintf("Identity is nil\n"))
 	}
- 	s.logger.Infof("%+v\n", identity.Cert.Subject.String())
+ 	//s.logger.Infof("%+v\n", identity.Cert.Subject.String())
 
 // 	if !identity.CanInvoke("createProduct") {
 // 		return peer.Response{
@@ -65,12 +65,12 @@ func (s *SmartContract) createProduct(stub shim.ChaincodeStubInterface, args []s
 		Sold:         false,
 		Recalled:     false,
 		ContainerID:  "",
-		Custodian:    identity.Cert.Subject.String(),
+		Custodian:    "identity.Cert.Subject.String()",
 		Timestamp:    int64(s.clock.Now().UTC().Unix()),
 		Participants: []string{"OU=Carrier,O=PartyB,L=51.50/-0.13/London,C=US", "OU=Warehouse,O=PartyC,L=42.36/-71.06/Boston,C=US", "OU=Store,O=PartyD,L=40.73/-74/New York,C=U"},
 	}
 
-	product.Participants = append(product.Participants, identity.Cert.Subject.String())
+	//product.Participants = append(product.Participants, identity.Cert.Subject.String())
 
 	// Put new Product onto blockchain
 
@@ -127,12 +127,16 @@ func (s *SmartContract) getAllProducts(stub shim.ChaincodeStubInterface, args []
 		}
 
 	    s.logger.Infof("product: %s\n", product)
-		if product.AccessibleBy(identity) {
-			if buffer.Len() != 1 {
-				buffer.WriteString(",")
-			}
-			buffer.WriteString(string(state.Value))
+		if buffer.Len() != 1 {
+			buffer.WriteString(",")
 		}
+		buffer.WriteString(string(state.Value))
+		//if product.AccessibleBy(identity) {
+		//	if buffer.Len() != 1 {
+		//		buffer.WriteString(",")
+		//	}
+		//	buffer.WriteString(string(state.Value))
+		//}
 	}
 	buffer.WriteString("]")
 
