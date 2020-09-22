@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/name: {{ $.Values.server.name }}
     helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/instance: {{ .Release.Name }} 
+    app.kubernetes.io/instance: {{ .Release.Name }}
     {{- include "labels.custom" . | nindent 2 }}
 spec:
   replicas: 1
@@ -22,7 +22,7 @@ spec:
       labels:
         name: {{ $.Values.server.name }}
         app.kubernetes.io/name: {{ $.Values.server.name }}
-        app.kubernetes.io/instance: {{ .Release.Name }} 
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ $.Values.vault.serviceaccountname }}
       imagePullSecrets:
@@ -68,12 +68,16 @@ spec:
 
           KUBE_SA_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
           echo "Getting secrets from Vault Server: ${VAULT_ADDR}"
+          echo "KUBERNETES_AUTH_PATH: ${KUBERNETES_AUTH_PATH}"
+          echo "VAULT_APP_ROLE: ${VAULT_APP_ROLE}"
+          echo "KUBE_SA_TOKEN: ${KUBE_SA_TOKEN}"
           # Login to Vault and so I can get an approle token
           VAULT_CLIENT_TOKEN=$(curl -sS --request POST ${VAULT_ADDR}/v1/auth/${KUBERNETES_AUTH_PATH}/login \
-            -H "Content-Type: application/json" \
-            -d '{"role":"'"${VAULT_APP_ROLE}"'","jwt":"'"${KUBE_SA_TOKEN}"'"}' | \
-            jq -r 'if .errors then . else .auth.client_token end')
+           -H "Content-Type: application/json" \
+           -d '{"role":"'"${VAULT_APP_ROLE}"'","jwt":"'"${KUBE_SA_TOKEN}"'"}' | \
+           jq -r 'if .errors then . else .auth.client_token end')
           validateVaultResponse 'vault login token' "${VAULT_CLIENT_TOKEN}"
+          echo "VAULT_CLIENT_TOKEN: ${VAULT_CLIENT_TOKEN}"
 
           SECRET_CERT={{ $.Values.vault.secretcert }}
           vault_secret_key=$(echo ${SECRET_CERT} |awk -F "?" '{print $1}')
